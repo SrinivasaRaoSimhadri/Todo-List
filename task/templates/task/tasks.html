@@ -1,0 +1,54 @@
+{% extends "task/main.html" %}
+{% load static %}
+{% block content %}
+<div class ="container border p-4 w-50 mt-5 bg-dark text-white">
+    <div class ="row mt-4">
+        <div class= "col-10">
+            <h1 class="">ToDo List</h1>
+        </div> 
+        <div class= "col text-right">
+            <a a class="btn btn-warning float-right" href= "{% url "logoutuser" %}">Logout</a>
+        </div>
+    </div>
+    <form class="mt-4 mb-4" method="POST" action="">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-9 d-flex">
+                <div class="col-5">
+                    <input class="form-control" type="text" name="search" placeholder="search task here..">
+                </div> 
+                <div class="col ms-2">
+                    <input class="btn btn-warning" type="submit" value="submit">
+                </div>
+            </div>
+            <div class="col-3 d-flex justify-content-end">
+                <a class="btn btn-warning" href="{% url 'create' %}">Add Task</a>
+            </div>
+          </div>
+    </form>
+    <table class = "table">
+        {% for task in tasks %}
+        <div class ="row">
+            <tr onclick="window.location='{% url 'task' task.id %}';" style="cursor:pointer;">
+                <td class="col-12 btn btn-warning" style="text-align :left">
+                   <div class="row">
+                        <h5 class="col-11"> {{ task.title }}</h5>
+                        {% if task.completed %} 
+                            <div class="col-1">
+                                <img src="{% static 'images/check-solid.svg' %}" height="30px" width="auto">
+                            </div>
+                        {% else %}
+                            <div class="col-1">
+                                <img  src="{% static 'images/clock-regular.svg' %}" height="30px" width="auto">
+                            </div>
+                        {% endif %}
+                   </div>
+                </td>
+            </tr>
+        </div>
+        {% empty %}
+            <h1>No tasks found</h1>
+        {% endfor %}
+        </table> 
+</div>
+{% endblock content %}
